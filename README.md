@@ -102,6 +102,7 @@ Step 5: Access Jenkins Web Interface
 bash
 
 sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+
 #######################
 
     Open your web browser and navigate to:
