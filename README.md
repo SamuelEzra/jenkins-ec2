@@ -102,10 +102,10 @@ Step 5: Access Jenkins Web Interface
 bash
 
 sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+#######################
 
     Open your web browser and navigate to:
 
-#######################
 
 http://your-ec2-public-ip:8080
 
