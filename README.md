@@ -44,52 +44,52 @@ Configure Security Group (b):
 Step 2: Connect to Your EC2 Instance
 bash
 
-# Change permissions on your key file
+### Change permissions on your key file
 chmod 400 your-key-pair.pem
 
-# Connect to your Ubuntu instance
+### Connect to your Ubuntu instance
 ssh -i "your-key-pair.pem" ubuntu@your-ec2-public-ip
 
 Step 3: Update System and Install Java
 bash
 
-# Update package list
+### Update package list
 sudo apt update
 
-# Upgrade existing packages
+### Upgrade existing packages
 sudo apt upgrade -y
 
-# Install Java (Jenkins requires Java 11 or 17)
+### Install Java (Jenkins requires Java 11 or 17)
 sudo apt install openjdk-11-jdk -y
 
-# Verify Java installation
+### Verify Java installation
 java -version
 
 Step 4: Install Jenkins
 bash
 
-# Add Jenkins repository key to the system
+### Add Jenkins repository key to the system
 curl -fsSL https://pkg.jenkins.io/debian/jenkins.io-2023.key | sudo tee \
   /usr/share/keyrings/jenkins-keyring.asc > /dev/null
 
-# Add Jenkins repository to apt sources
+### Add Jenkins repository to apt sources
 echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
   https://pkg.jenkins.io/debian binary/ | sudo tee \
   /etc/apt/sources.list.d/jenkins.list > /dev/null
 
-# Update package list to include Jenkins repository
+### Update package list to include Jenkins repository
 sudo apt update
 
-# Install Jenkins
+### Install Jenkins
 sudo apt install jenkins -y
 
-# Start Jenkins service
+### Start Jenkins service
 sudo systemctl start jenkins
 
-# Enable Jenkins to start on boot
+### Enable Jenkins to start on boot
 sudo systemctl enable jenkins
 
-# Check Jenkins status
+### Check Jenkins status
 sudo systemctl status jenkins
 
 ![jenkins_running](./jenks3.png)
