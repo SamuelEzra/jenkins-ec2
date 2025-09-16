@@ -1,6 +1,18 @@
 # Jenkins Installation on Amazon EC2 (Ubuntu)
 
-This guide provides step-by-step instructions for installing Jenkins on an Ubuntu Amazon EC2 instance.
+**Continuous Integration and Continuous Deployment (CI/CD)** is a DevOps practice that enables development teams to deliver code changes more frequently and reliably. Jenkins is an open-source automation server that provides hundreds of plugins to support building, deploying, and automating any project.
+
+Benefits of Jenkins in DevOps:
+
+    Automation: Automates the entire software development lifecycle
+
+    Integration: Integrates with various development, testing, and deployment tools
+
+    Extensibility: Large plugin ecosystem for extended functionality
+
+    Distributed builds: Master-agent architecture for scalable builds
+
+    Pipeline as code: Define build pipelines using code (Jenkinsfile)
 
 ## Prerequisites
 
@@ -10,87 +22,98 @@ This guide provides step-by-step instructions for installing Jenkins on an Ubunt
 
     ✅ A security group with appropriate ports (22 & 8080) open
 
-Step 1 (a): Launch an Ubuntu EC2 Instance
+Step 1: Launch an Ubuntu EC2 Instance
 
-    - Log in to your AWS Management Console
+    Log in to your AWS Management Console
 
-    - Navigate to EC2 service
+    Navigate to EC2 service and click "Launch Instance"
 
-    - Click "Launch Instance"
+    Configure your instance:
 
-    - Choose an Ubuntu Server AMI (22.04 LTS or 20.04 LTS recommended)
+        Name: Jenkins-Server
 
-    - Select an instance type (t2.micro is sufficient for testing)
+        AMI: Ubuntu Server 22.04 LTS
 
-    - Configure instance details 
+        Instance type: t2.medium (recommended for Jenkins with Docker)
 
-    
+        Key pair: Create or select an existing key pair
+
+        Network settings: Create security group with rules below
+
+        Storage: 25 GB GP3 volume
+
 ![ec2](./jenk1.png)
 
-Configure Security Group (b):
+    Security Group Configuration:
 
-        Add rules to allow traffic on the following ports:
+        SSH (port 22) - Your IP only
 
-            SSH (port 22) - from your IP only for security
+        HTTP (port 80) - 0.0.0.0/0
 
-            Custom TCP (port 8080) - from anywhere (0.0.0.0/0) - Jenkins default port
+        Custom TCP (port 8080) - 0.0.0.0/0 (Jenkins web interface)
+
+    Launch instance and download your key pair
+
 
 ![sg](./jenk2.png)
 
-    Review and launch the instance
-
-    Select or create a key pair and download it
 
 Step 2: Connect to Your EC2 Instance
-bash
 
-### Change permissions on your key file
+```bash
+
+# Change permissions on your key file
 chmod 400 your-key-pair.pem
 
-### Connect to your Ubuntu instance
+# Connect to your Ubuntu instance
 ssh -i "your-key-pair.pem" ubuntu@your-ec2-public-ip
 
 Step 3: Update System and Install Java
 bash
 
-### Update package list
+# Update package list
 sudo apt update
 
-### Upgrade existing packages
+# Upgrade existing packages
 sudo apt upgrade -y
 
-### Install Java (Jenkins requires Java 11 or 17)
+# Install Java (Jenkins requires Java 11 or 17)
 sudo apt install openjdk-11-jdk -y
 
-### Verify Java installation
+# Verify Java installation
 java -version
 
-Step 4: Install Jenkins
-bash
+```
 
-### Add Jenkins repository key to the system
+Step 4: Install Jenkins
+
+```bash
+
+# Add Jenkins repository key to the system
 curl -fsSL https://pkg.jenkins.io/debian/jenkins.io-2023.key | sudo tee \
   /usr/share/keyrings/jenkins-keyring.asc > /dev/null
 
-### Add Jenkins repository to apt sources
+# Add Jenkins repository to apt sources
 echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
   https://pkg.jenkins.io/debian binary/ | sudo tee \
   /etc/apt/sources.list.d/jenkins.list > /dev/null
 
-### Update package list to include Jenkins repository
+# Update package list to include Jenkins repository
 sudo apt update
 
-### Install Jenkins
+# Install Jenkins
 sudo apt install jenkins -y
 
-### Start Jenkins service
+# Start Jenkins service
 sudo systemctl start jenkins
 
-### Enable Jenkins to start on boot
+# Enable Jenkins to start on boot
 sudo systemctl enable jenkins
 
-### Check Jenkins status
+# Check Jenkins status
 sudo systemctl status jenkins
+
+```
 
 ![jenkins_running](./jenks3.png)
 
@@ -99,16 +122,21 @@ Step 5: Access Jenkins Web Interface
 
     Get the initial admin password:
 
-bash
+```bash
 
 sudo cat /var/lib/jenkins/secrets/initialAdminPassword
 
 #######################
 
+```
+
     Open your web browser and navigate to:
 
+```text
 
 http://your-ec2-public-ip:8080
+
+```
 
     Enter the admin password when prompted
 
